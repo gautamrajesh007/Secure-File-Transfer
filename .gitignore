@@ -9,3 +9,7 @@ target/
 ### IntelliJ IDEA ###
 ./Client/.idea/
 ./Server/.idea/
+
+## CERTs and wks
+*.jks
+*.crt
