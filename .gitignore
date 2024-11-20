@@ -1,0 +1,11 @@
+target/
+!./Client/.mvn/wrapper/maven-wrapper.jar
+!./Client/**/src/main/**/target/
+!./Client/**/src/test/**/target/
+!./Server/.mvn/wrapper/maven-wrapper.jar
+!./Server/**/src/main/**/target/
+!./Server/**/src/test/**/target/
+
+### IntelliJ IDEA ###
+./Client/.idea/
+./Server/.idea/
