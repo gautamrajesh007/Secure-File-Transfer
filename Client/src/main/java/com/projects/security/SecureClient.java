@@ -41,7 +41,7 @@ public class SecureClient {
             ) {
                 writer.println("FILE_TRANSFER");
                 sendEncryptedFile(output);
-                System.out.println(reader.readLine());
+//                System.out.println(reader.readLine());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -75,7 +75,8 @@ public class SecureClient {
         Cipher aesCipher = Cipher.getInstance("AES");
         aesCipher.init(Cipher.ENCRYPT_MODE, aesKey);
 
-        try (FileInputStream fileInput = new FileInputStream("/Users/gautam/Security/Projects/TLS_Sim/Client/src/main/resources/testFile.txt");
+        try (FileInputStream fileInput = new FileInputStream("/Users/gautam/Security/Projects/TLS_Sim/Client/src/main" +
+                "/resources/testFile-1.txt");
              CipherOutputStream cipherOutput = new CipherOutputStream(output, aesCipher)) {
 
             byte[] buffer = new byte[4096];
