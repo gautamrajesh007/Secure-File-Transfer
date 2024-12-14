@@ -10,7 +10,6 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.net.ssl.*;
 import java.io.*;
 import java.security.*;
-import java.security.cert.Certificate;
 
 public class SecureServer {
     public static void main(String[] args) {
@@ -24,17 +23,21 @@ public class SecureServer {
             KeyStore keyStore = KeyStore.getInstance("JKS");
             keyStore.load(new FileInputStream("/Users/gautam/Security/Projects/TLS_Sim/Server/src/main/java/com/projects/security/keystores/server.jks"), "password".toCharArray());
 
+            // KeyManagerFactory use the keystore for managing private keys and certificate
             KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance("SunX509");
             keyManagerFactory.init(keyStore, "password".toCharArray());
 
+            // Initialized SSLContext with keyManagerFactory
             SSLContext sslContext = SSLContext.getInstance("TLS");
             sslContext.init(keyManagerFactory.getKeyManagers(), null, new SecureRandom());
 
+            // Create an SSL server socket and listen for connections
             SSLServerSocketFactory serverSocketFactory = sslContext.getServerSocketFactory();
             SSLServerSocket serverSocket = (SSLServerSocket) serverSocketFactory.createServerSocket(port);
 
             System.out.println("Secure server is running on port " + port);
 
+            // Each new connection is handled in a separate thread using the EncryptedClientHandler class
             while (true) {
                 SSLSocket clientSocket = (SSLSocket) serverSocket.accept();
                 new Thread(new EncryptedClientHandler(clientSocket)).start();
@@ -75,7 +78,8 @@ class EncryptedClientHandler implements Runnable {
     }
 
     private void receiveEncryptedFile(InputStream input, PrintWriter writer) throws Exception {
-        // Wrap the input stream in a DataInputStream for easier handling of data
+        // Wrap the input stream in a DataInputStream for easier handling of data(InputStream does provide methods to
+        // read java primitive datatypes)
         DataInputStream dataInput = new DataInputStream(input);
 
         // Read the length of the encrypted AES key
@@ -92,9 +96,11 @@ class EncryptedClientHandler implements Runnable {
         byte[] encoding = "EncodingKey".getBytes();    // Match the parameters used by the client
         IESParameterSpec iesParams = new IESParameterSpec(derivation, encoding, 128);
 
+        // Create a Cipher class instance for encryption and decryption
         Cipher eciesCipher = Cipher.getInstance("ECIES", "BC");
         eciesCipher.init(Cipher.DECRYPT_MODE, privateKey, iesParams);
 
+        // Actual decryption of AES key from the ECIES cipher
         byte[] aesKeyBytes = eciesCipher.doFinal(encryptedKey);
         SecretKey aesKey = new SecretKeySpec(aesKeyBytes, "AES");
 
@@ -102,7 +108,8 @@ class EncryptedClientHandler implements Runnable {
         Cipher aesCipher = Cipher.getInstance("AES/ECB/PKCS5Padding"); // Adjust mode/padding if needed
         aesCipher.init(Cipher.DECRYPT_MODE, aesKey);
 
-        File file = new File("received_encrypted_file.txt");
+        // Decrypting and writing the encrypted to new file on the server
+        File file = new File("received_encrypted_file");
         try (FileOutputStream fileOut = new FileOutputStream(file);
              CipherInputStream cipherInput = new CipherInputStream(dataInput, aesCipher)) { // Use DataInputStream for seamless transition
 

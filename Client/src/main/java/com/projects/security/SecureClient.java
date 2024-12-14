@@ -14,7 +14,6 @@ import java.security.KeyStore;
 import java.security.PublicKey;
 import java.security.Security;
 import java.security.cert.Certificate;
-import java.util.Arrays;
 
 public class SecureClient {
     public static void main(String[] args) {
@@ -76,7 +75,7 @@ public class SecureClient {
         aesCipher.init(Cipher.ENCRYPT_MODE, aesKey);
 
         try (FileInputStream fileInput = new FileInputStream("/Users/gautam/Security/Projects/TLS_Sim/Client/src/main" +
-                "/resources/testFile-1.txt");
+                "/resources/Phishing_Detection_Dataset.csv");
              CipherOutputStream cipherOutput = new CipherOutputStream(output, aesCipher)) {
 
             byte[] buffer = new byte[4096];

@@ -13,3 +13,5 @@ target/
 ## CERTs and wks
 *.jks
 *.crt
+
+.idea/
