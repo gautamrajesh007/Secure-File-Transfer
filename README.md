@@ -7,6 +7,7 @@ This project demonstrates the simulation of TLS in HTTPS using Java and Maven. I
 - Java Development Kit (JDK)
 - Maven
 - Keytool (included in JDK)
+- BouncyCastle(Open-source cryptographic APIs)
 
 ## Steps to Generate and Add Keys and Certificates
 
