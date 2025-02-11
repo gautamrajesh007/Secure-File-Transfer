@@ -1,5 +1,7 @@
 package com.projects.security;
 
+import io.github.cdimascio.dotenv.Dotenv;
+
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
 import javax.crypto.SecretKey;
@@ -10,8 +12,8 @@ import java.security.KeyStore;
 import java.security.PrivateKey;
 
 public class ClientHandler implements Runnable {
-    private static final String KEYSTOREPATH = System.getProperty("user.dir") + "/Server/src/main/java/com/projects" +
-            "/security/keystore/server.jks";
+    private static final Dotenv env = Dotenv.load();
+    private static final String KEYSTOREPATH = System.getProperty("user.dir") + env.get("KEYSTOREPATH");
     private final SSLSocket clientSocket;
 
     public ClientHandler(SSLSocket clientSocket) {
@@ -105,8 +107,6 @@ public class ClientHandler implements Runnable {
                 "/resources/" + fileName);
         tempFile.renameTo(finalFile);
         System.out.println("File --> " + tempFile.getName() + " received and stored safely.");
-        writer.println("File received successfully.");
-
     }
 
     private static PrivateKey loadPrivateKey() throws Exception {
