@@ -1,0 +1,30 @@
+target/
+!./Client/.mvn/wrapper/maven-wrapper.jar
+!./Client/**/src/main/**/target/
+!./Client/**/src/test/**/target/
+!./Server/.mvn/wrapper/maven-wrapper.jar
+!./Server/**/src/main/**/target/
+!./Server/**/src/test/**/target/
+
+### IntelliJ IDEA ###
+./Client/.idea/
+./Server/.idea/
+
+## CERTs and wks
+*.jks
+*.crt
+
+.idea/
+
+### Mac OS ###
+.DS_Store
+/Server/.idea/
+/Client/.idea/
+/Server/src/main/java/com/projects/security/truststore/
+/Server/src/main/java/com/projects/security/keystore/
+/Server/src/main/java/com/projects/security/certs/
+/Client/src/main/java/com/projects/security/certs/
+/Client/src/main/java/com/projects/security/keystore/
+/Client/src/main/java/com/projects/security/truststore/
+/Server/src/main/resources/
+/Client/src/main/resources/
