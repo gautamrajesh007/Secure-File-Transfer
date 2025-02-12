@@ -1,6 +1,11 @@
 # TLS Simulation
 
-This project demonstrates the simulation of TLS in HTTPS using Java and Maven. It includes both client and server components.
+This project demonstrates the simulation of file transfer using TLS with addition of malware scanning using 
+Java and VirusTotal APIs.
+It includes both 
+client and 
+server 
+components.
 
 ## Prerequisites
 
