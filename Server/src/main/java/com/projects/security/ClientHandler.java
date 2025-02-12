@@ -13,7 +13,7 @@ import java.security.PrivateKey;
 
 public class ClientHandler implements Runnable {
     private static final Dotenv env = Dotenv.load();
-    private static final String KEYSTOREPATH = System.getProperty("user.dir") + env.get("KEYSTOREPATH");
+    private static final String KEYSTOREPATH = System.getProperty("user.dir") + env.get("KEYSTORE_PATH");
     private final SSLSocket clientSocket;
 
     public ClientHandler(SSLSocket clientSocket) {
@@ -75,10 +75,9 @@ public class ClientHandler implements Runnable {
 
         // Decrypting and writing the encrypted to new file on the server
         ByteArrayOutputStream tempBuffer = new ByteArrayOutputStream();
-        try (FileOutputStream fileOut = new FileOutputStream(System.getProperty("user.dir") + "/Server/src/main" +
-                "/resources/" + fileName);
-             // Using CipherInputStream with the AES cipher to decrypt on the fly
-             CipherInputStream cipherInput = new CipherInputStream(dataInput, aesCipher)) {
+        try (// Using CipherInputStream with the AES cipher to decrypt on the fly
+             CipherInputStream cipherInput = new CipherInputStream(dataInput, aesCipher)
+        ) {
 
             byte[] buffer = new byte[4096];
             int bytesRead;
@@ -88,25 +87,23 @@ public class ClientHandler implements Runnable {
         }
         writer.println("Encrypted file received securely.");
 
-        File tempFile = new File(System.getProperty("user.dir") + "/Server/src/main" +
-                "/resources/temp_received_" + fileName);
+        File tempFile = new File(System.getProperty("user.dir") + "/Server/src/main/resources/temp_" + fileName);
         try (FileOutputStream fos = new FileOutputStream(tempFile)) {
             fos.write(tempBuffer.toByteArray());
         }
 
         // Scan the file with VirusTotal before saving it permanently
-        if (!MalwareScanner.scanFile(tempFile.getAbsolutePath())) {
+        if (MalwareScanner.scanFile(tempFile.getAbsolutePath())) {
+            tempFile.delete(); // Delete the temp file
             System.out.println("File is malicious! Rejecting.");
             writer.println("File rejected due to malware.");
-            tempFile.delete(); // Delete the temp file
             return;
         }
 
         // If clean, save the file permanently
-        File finalFile = new File(System.getProperty("user.dir") + "/Server/src/main" +
-                "/resources/" + fileName);
+        File finalFile = new File(System.getProperty("user.dir") + "/Server/src/main/resources/" + fileName);
         tempFile.renameTo(finalFile);
-        System.out.println("File --> " + tempFile.getName() + " received and stored safely.");
+        System.out.println("File --> " + finalFile.getName() + " received and stored safely.");
     }
 
     private static PrivateKey loadPrivateKey() throws Exception {

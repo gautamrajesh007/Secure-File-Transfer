@@ -1,5 +1,7 @@
 package com.projects.security;
 
+import io.github.cdimascio.dotenv.Dotenv;
+
 import javax.crypto.*;
 import java.io.*;
 import java.security.*;
@@ -7,8 +9,8 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 
 public class FileHandler {
-    private static final String KEYSTORE_PATH = System.getProperty("user.dir") + "/Client/src/main/java/com/projects" +
-            "/security/keystore/client.jks";
+    private static final Dotenv env = Dotenv.load();
+    private static final String KEYSTORE_PATH = System.getProperty("user.dir") + env.get("KEYSTORE_PATH");
     private static String filePath;
 
     public FileHandler(String filePath) {

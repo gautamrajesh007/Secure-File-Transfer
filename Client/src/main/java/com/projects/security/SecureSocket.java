@@ -1,5 +1,7 @@
 package com.projects.security;
 
+import io.github.cdimascio.dotenv.Dotenv;
+
 import javax.net.ssl.*;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -7,11 +9,9 @@ import java.security.*;
 import java.security.cert.CertificateException;
 
 public class SecureSocket {
-    private static final String KEYSTORE_PATH = System.getProperty("user.dir") + "/Client/src/main/java/com/projects" +
-            "/security/keystore/client.jks";
-    private static final String TRUSTSTORE_PATH = System.getProperty("user.dir") + "/Client/src/main/java/com" +
-            "/projects" +
-            "/security/truststore/client-truststore.jks";
+    private static final Dotenv env = Dotenv.load();
+    private static final String KEYSTORE_PATH = System.getProperty("user.dir") + env.get("KEYSTORE_PATH");
+    private static final String TRUSTSTORE_PATH = System.getProperty("user.dir") + env.get("TRUSTSTORE_PATH");
 
     public SecureSocket() {}
 
