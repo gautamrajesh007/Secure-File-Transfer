@@ -4,11 +4,12 @@ This project demonstrates the simulation of TLS in HTTPS using Java and Maven. I
 
 ## Prerequisites
 
-- Java Development Kit (JDK)
+- JDK 21
 - Maven
+- Dotenv-Java
 - Keytool (included in JDK)
-- BouncyCastle(Open-source cryptographic APIs)
-- Specify the path to public and private keys in SecureClient and SecureServer classes
+- Jackson JSON Library
+- Apache HttpComponents Client
 
 ## Steps to Generate and Add Keys and Certificates
 
@@ -56,7 +57,7 @@ keytool -importcert -alias client_cert -file client_cert.crt \
 
 ### 7. Import certificates to the truststore
 
-- Instead of modifying $JAVA_HOME/lib/security/cacerts, we should create a dedicated truststore.
+- Instead of modifying $JAVA_HOME/lib/security/cacerts, create a dedicated truststore.
 - This avoids system-wide risks.
 
 ```sh
@@ -69,8 +70,8 @@ keytool -importcert -alias client_cert -file client_cert.crt -keystore server-tr
 
 ## Project Structure
 
-- `client/`: Contains the client-side code.
-- `server/`: Contains the server-side code.
+- `Client/`: Contains the client-side code.
+- `Server/`: Contains the server-side code.
 
 ## Building the Project
 
@@ -102,7 +103,7 @@ mvn exec:java -Dexec.mainClass="com.myorg.client.ClientMain"
 
 - Enhance the security by removing the hardcoded shared key seed value.
 - Use env to abstract the sensitive values.
-- Change the version of bouncy castle to the latest version as the current version is having 3 reported vulnerabilities.
+- Use a secure random number generator.
 
 ## License
 
