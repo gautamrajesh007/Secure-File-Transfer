@@ -28,7 +28,9 @@ public class SecureClient {
                 FileHandler fileHandler = new FileHandler(filePath);
                 fileHandler.encryption(output);
             }
-        } catch (UnrecoverableKeyException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException | InvalidKeyException | CertificateException | KeyStoreException | IOException |
+        } catch (UnrecoverableKeyException | NoSuchPaddingException | IllegalBlockSizeException |
+                 BadPaddingException | InvalidKeyException |
+                 CertificateException | KeyStoreException | IOException |
                  NoSuchAlgorithmException | KeyManagementException e) {
             throw new RuntimeException(e);
         }
